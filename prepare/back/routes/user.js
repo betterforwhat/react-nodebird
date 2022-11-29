@@ -1,12 +1,39 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const passport = require('passport');
 const { User } = require('../models');
 
 const router = express.Router();
 
-router.post('/login', (req, res, next) => { // POST /user/login
+router.post('/login', (req, res, next) => {
+  console.log('req ', req);
+  passport.authenticate('local', (err, user, info) => {
+    if (err) {
+      console.error(err);
+      next(err);
+    }
 
-})
+    if (info) {
+      return res.status(401).send(info.reason);
+    }
+
+    return req.login(user, async (loginErr) => {
+      if (loginErr) {
+        console.error(loginErr);
+        return next(loginErr);
+      }
+
+      // res.setHeader('Cookie', 'cajdfljasdlfjaslfkaj');
+      return res.json(user);
+    });
+  })(req, res, next);
+});
+
+router.post('/user/logout', (req, res, next) => {
+  req.logout();
+  req.session.destroy();
+  res.send('ok');
+});
 
 router.post('/', async (req, res, next) => { // POST /user/
   try {

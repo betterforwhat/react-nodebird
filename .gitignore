@@ -25,6 +25,8 @@ yarn-debug.log*
 yarn-error.log*
 
 **/config.json
+**/config.js
 **/yarn.lock
 
 **/package-lock.json
+**/.env

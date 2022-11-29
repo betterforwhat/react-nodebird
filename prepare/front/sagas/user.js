@@ -41,6 +41,7 @@ function* logIn(action) {
       data: result.data,
     });
   } catch (err) {
+    console.log('err ', err);
     yield put({
       type: LOG_IN_FAILURE,
       error: err.response.data,
