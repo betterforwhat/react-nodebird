@@ -4,6 +4,7 @@ import postSaga from './post';
 import userSaga from './user';
 
 axios.defaults.baseURL = 'http://localhost:3065';
+axios.defaults.withCredentials = true;
 
 // fork(비동기) vs call(동기) - generator 실행
 // take, takeEvery, takeLatest,    takeLeading

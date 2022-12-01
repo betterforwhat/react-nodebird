@@ -7,7 +7,7 @@ import PostCardContent from '../components/PostCardContent';
 import FollowButton from '../components/FollowButton';
 import { Card, Popover, Button, Avatar, List, Comment } from 'antd';
 import { RetweetOutlined, HeartOutlined, HeartTwoTone, MessageOutlined, EllipsisOutlined } from '@ant-design/icons';
-import { REMOVE_POST_REQUEST } from '../reducers/post';
+import { REMOVE_POST_REQUEST, LIKE_POST_REQUEST, UNLIKE_POST_REQUEST  } from '../reducers/post';
 
 const PostCard = ({ post }) => {
   const dispatch = useDispatch();
@@ -15,7 +15,6 @@ const PostCard = ({ post }) => {
   const { removePostLoading } = useSelector((state) => state.post);
   const id = me?.id;
 
-  const [liked, setLiked] = useState(false);
   const [commentFormOpened, setCommentFormOpened] = useState(false);
 
   const onRemovePost = useCallback(() => {
@@ -25,25 +24,38 @@ const PostCard = ({ post }) => {
     })
   }, [post.id]);
 
-  const onToggleLike = useCallback(() => {
-    setLiked(prev => !prev);
+  const onLike = useCallback(() => {
+    dispatch({
+      type: LIKE_POST_REQUEST,
+      data: post.id,
+    })
+  }, []);
+
+  const onUnLike = useCallback(() => {
+    console.log('onUnLike');
+    dispatch({
+      type: UNLIKE_POST_REQUEST,
+      data: post.id,
+    })
   }, []);
 
   const onToggleComment = useCallback(() => {
     setCommentFormOpened(prev => !prev);
-  })
+  });
 
-  console.log('post ', post);
+  const liked = post?.Likers?.find((v) => v.id === id);
+
+  console.log('liked ', liked);
 
   return (
     <div style={{ marginBottom: '20px' }}>
       <Card
-        cover={post.Images[0] && <PostImages images={post.Images} />}
+        cover={post?.Images[0] && <PostImages images={post.Images} />}
         actions={[
           <RetweetOutlined key="retweet" />,
           liked
-            ? <HeartTwoTone key="heart" twoToneColor="#eb2f96" onClick={onToggleLike} />
-            : <HeartOutlined key="heart" onClick={onToggleLike} />,
+            ? <HeartTwoTone key="heart" twoToneColor="#eb2f96" onClick={onUnLike} />
+            : <HeartOutlined key="heart" onClick={onLike} />,
           <MessageOutlined key="comment" onClick={onToggleComment} />,
           <Popover key="more" content={(
             <Button.Group>
@@ -96,9 +108,10 @@ PostCard.propTypes = {
     id: PropTypes.number,
     User: PropTypes.object,
     content: PropTypes.string,
-    createdAt: PropTypes.object,
+    createdAt: PropTypes.string,
     Comments: PropTypes.arrayOf(PropTypes.object),
     Images: PropTypes.arrayOf(PropTypes.object),
+    Likers: PropTypes.arrayOf(PropTypes.object),
   }).isRequired,
 }
 
