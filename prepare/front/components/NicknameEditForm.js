@@ -7,15 +7,23 @@ import { CHANGE_NICKNAME_REQUEST } from '../reducers/user';
 
 const NicknameEditForm = () => {
   const { me } = useSelector((state) => state.user);
-  const [nickname, onChangeNickname] = useInput(me?.nickname || '');
+  const [nickname, setNickname] = useInput(me?.nickname || '');
   const dispatch = useDispatch();
 
+  const onChangeNickname = useCallback((e) => {
+    setNickname(e.target.value);
+  }, []);
+
   const onSubmit = useCallback(() => {
+    console.log('nickname ', nickname);
     dispatch({
       type: CHANGE_NICKNAME_REQUEST,
       data: nickname,
     });
   }, [nickname]);
+
+  console.log('me ', me);
+  console.log('nickname vvvv ', nickname);
 
   return (
     <Form style={{ marginBottom: '20px', border: '1px solid #d9d9d9', padding: '20px' }}>
