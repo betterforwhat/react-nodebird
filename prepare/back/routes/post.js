@@ -47,7 +47,7 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
 
     if (req.body.image) {
       if (Array.isArray(req.body.image)) { // 이미지를 여러개 올린경우
-        const images = await Promise.all(req.body.image.map((image) => Image.create({ src: image})));
+        const images = await Promise.all(req.body.image.map((image) => Image.create({ src: image })));
         await post.addImages(images);
       } else { // 이미지를 하나만 올린경우
         const image = await Image.create({ src: req.body.image });
@@ -55,7 +55,7 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
       }
     }
     const fullPost = await Post.findOne({
-      where: {id: post.id },
+      where: { id: post.id },
       include: [{
         model: Image
       }, {
@@ -78,6 +78,10 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
     console.error(error);
     next(error);
   }
+
+});
+
+router.get('/:postId', isLoggedIn, async (req, res, next) => { // GET /post/1
 
 });
 
@@ -105,7 +109,7 @@ router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => { // POST 
     if (!post) {
       return res.status(403).send('존재하지 않는 게시글입니다.');
     }
-    
+
 
     if (req.user.id === post.UserId || (post.Retweet && post.Retweet.UserId === req.user.id)) {
       return res.status(403).send('자신의 글은 리트윗할 수 없습니다.');
@@ -188,9 +192,9 @@ router.post('/:postId/comment', isLoggedIn, async (req, res, next) => { // POST 
   }
 });
 
-router.patch('/:postId/like', isLoggedIn,async (req, res, next) => { // PATCH /post/1/like
+router.patch('/:postId/like', isLoggedIn, async (req, res, next) => { // PATCH /post/1/like
   try {
-    const post = await Post.findOne({ where: { id: req.params.postId }});
+    const post = await Post.findOne({ where: { id: req.params.postId } });
     if (!post) {
       return res.status(403).send('게시글이 존재하지 않습니다.');
     }
@@ -205,7 +209,7 @@ router.patch('/:postId/like', isLoggedIn,async (req, res, next) => { // PATCH /p
 router.delete('/:postId/like', isLoggedIn, async (req, res, next) => { // DELETE /post/1/like
   console.log('heree');
   try {
-    const post = await Post.findOne({ where: { id: req.params.postId }});
+    const post = await Post.findOne({ where: { id: req.params.postId } });
     if (!post) {
       return res.status(403).send('게시글이 존재하지 않습니다.');
     }
@@ -221,8 +225,8 @@ router.delete('/:postId/like', isLoggedIn, async (req, res, next) => { // DELETE
 router.delete('/:postId', isLoggedIn, async (req, res) => { // DELETE /post/1
   try {
     await Post.destroy({
-      where: { 
-        id : parseInt(req.params.postId, 10),
+      where: {
+        id: parseInt(req.params.postId, 10),
         UserId: req.user.id,
       }
     });
