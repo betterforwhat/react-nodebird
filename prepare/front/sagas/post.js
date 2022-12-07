@@ -37,7 +37,7 @@ import shortId from 'shortid';
 import axios from 'axios';
 
 function loadPostAPI(data) {
-  return axios.get(`/posts/${data}`);
+  return axios.get(`/post/${data}`);
 }
 
 function loadPostsAPI(lastId) {
@@ -107,6 +107,7 @@ function* unlikePost(action) {
 function* loadPost(action) {
   try {
     const result = yield call(loadPostAPI, action.data);
+    console.log('loadPost ', result);
     yield put({
       type: LOAD_POST_SUCCESS,
       data: result.data,
@@ -114,7 +115,7 @@ function* loadPost(action) {
   } catch (err) {
     console.error(err);
     yield put({
-      type: LOAD_POSTSFAILURE,
+      type: LOAD_POST_FAILURE,
       error: err.response.data,
     });
   }
