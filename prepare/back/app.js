@@ -10,6 +10,7 @@ const path = require('path');
 const postRouter = require('./routes/post');
 const postsRouter = require('./routes/posts');
 const userRouter = require('./routes/user');
+const hashtagRouter = require('./routes/hashtag');
 const db = require('./models');
 const passportConfig = require('./passport');
 
@@ -44,6 +45,7 @@ app.get('/', (req, res) => {
 app.use('/post', postRouter);
 app.use('/posts', postsRouter);
 app.use('/user', userRouter);
+app.use('/hashtag', hashtagRouter);
 
 
 // 에러 처리미들웨어

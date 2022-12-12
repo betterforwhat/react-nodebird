@@ -83,6 +83,7 @@ function removeFollowerAPI(data) {
 
 function* loadUser(action) {
   try {
+    console.log('loadUser ');
     const result = yield call(loadUserAPI, action.data);
     yield put({
       type: LOAD_USER_SUCCESS,
@@ -90,6 +91,7 @@ function* loadUser(action) {
     })
 
   } catch (err) {
+    console.error('loadUser err ', err);
     yield put({
       type: LOAD_USER_FAILURE,
       error: err.response.data,
@@ -107,6 +109,7 @@ function* loadMyInfo() {
     })
 
   } catch (err) {
+    console.error('loadMyInfo ', err);
     yield put({
       type: LOAD_MY_INFO_FAILURE,
       error: err.response.data,
