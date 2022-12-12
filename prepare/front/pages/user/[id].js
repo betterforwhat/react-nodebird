@@ -61,23 +61,23 @@ const User = () => {
               <div key="twit">
                 짹짹
                 <br />
-                {userInfo.Posts.length}
+                {userInfo?.Posts?.length}
               </div>,
               <div key="following">
                 팔로잉
                 <br />
-                {userInfo.Followings.length}
+                {userInfo?.Followings?.length}
               </div>,
               <div key="follower">
                 팔로워
                 <br />
-                {userInfo.Followers.length}
+                {userInfo?.Followers?.length}
               </div>,
             ]}
           >
             <Card.Meta
-              avatar={<Avatar>{userInfo.nickname[0]}</Avatar>}
-              title={userInfo.nickname}
+              avatar={<Avatar>{userInfo?.nickname[0]}</Avatar>}
+              title={userInfo?.nickname}
             />
           </Card>
         )
