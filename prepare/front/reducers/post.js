@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import shortId from 'shortid';
-import produce from 'immer';
+import produce from '../util/produce';
 
 export const initialState = {
   mainPosts: [],
